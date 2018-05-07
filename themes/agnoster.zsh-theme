@@ -72,6 +72,9 @@ prompt_end() {
   fi
   echo -n "%{%f%}"
   CURRENT_BG=''
+  
+  #Adds the new line and ➜ as the start character.
+  printf "\n ➜";
 }
 
 ### Prompt components
@@ -198,6 +201,14 @@ prompt_virtualenv() {
   fi
 }
 
+# Conda env: current working Anaconda/Miniconda env
+prompt_conda_env() {
+  local conda_path="$CONDA_DEFAULT_ENV"
+  if [[ -n $conda_path ]]; then
+    prompt_segment blue black "(`basename $conda_path`)"
+  fi
+}
+
 # Status:
 # - was there an error
 # - am I root
@@ -217,6 +228,7 @@ build_prompt() {
   RETVAL=$?
   prompt_status
   prompt_virtualenv
+  prompt_conda_env
   prompt_context
   prompt_dir
   prompt_git
